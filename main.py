@@ -136,7 +136,10 @@ async def get_graph(data: str = Form('data')):
 
 
 def print_conllu_format(data):
-    result = ''
+    conllu_text = ''
+    result = {}
+    pos = []
+    morph = []
     for sentence_info in data['sentences']:
         sentence_id = sentence_info['id']
         sentence_text = sentence_info['text']
@@ -144,7 +147,9 @@ def print_conllu_format(data):
 
         print(f"# sent_id = {sentence_id}")
         print(f"# text = {sentence_text}")
-        result = ''
+        conllu_text = ''
+        pos = []
+        morph = []
         for token_info in tokens:
             token_id = token_info['id']
             token_text = token_info['text']
@@ -157,9 +162,14 @@ def print_conllu_format(data):
             # deps = token_info.get('deps', '_')
             # misc = token_info.get('misc', '_')
 
-            result += f"{token_id}\t{token_text}\t{lemma}\t{upos}\t{xpos}\t{feats}\t{head}\t{deprel}\t_\t_\n"
-        result += "\n\n"
-        print(result)
+            conllu_text += f"{token_id}\t{token_text}\t{lemma}\t{upos}\t{xpos}\t{feats}\t{head}\t{deprel}\t_\t_\n"
+            pos.append({"token_text": token_text, "upos": upos})
+            morph.append({"token_text": token_text, "feats": feats})
+        conllu_text += "\n\n"
+        result['graph_feature'] = conllu_text
+        result['pos'] = pos
+        result['morph'] = morph
+        print(conllu_text)
     return result
 
 
@@ -175,7 +185,9 @@ async def get_trankit_graph_data(data: str = Form('data')):
         if text != '':
             text = re.sub(r'^(\d+)\.\s*', r'\1', text)
             all_info = p(text)
-            conllu_text = print_conllu_format(all_info)
-            doc_texts.append({"text": text, "feature": conllu_text})
-
+            result = print_conllu_format(all_info)
+            doc_texts.append(
+                {"text": text, "feature": result['graph_feature'], "pos": result['pos'], "morph": result['morph']}
+            )
+    print(doc_texts)
     return doc_texts

@@ -124,9 +124,11 @@ func main() {
 </head>
 <body>
 <div id="top">
+<!-- 
 Select all:
 <button onclick="toggleAll(false)">Basic</button>
 <button onclick="toggleAll(true)">Enhanced</button>
+-->
 </div>
 `)
 
@@ -300,7 +302,7 @@ func doSentence(lines []Line, filename string, id int) {
 					headpos: headpos,
 					rel:     [2]string{"", a[columns["FORM"]]},
 					dist:    abs(end - headpos)})
-				hasEnhanced = true
+				// hasEnhanced = true
 			}
 		}
 	}
@@ -697,13 +699,13 @@ tts['%s'] = [
 	fmt.Println("</script>")
 	if hasEnhanced {
 		fmt.Printf(`<div class="udcontrol">
-<input type="radio" id="btnb%s" name="btn%s" onclick="toggle('%s',false)" class="rb" /><label for="btnb%s">Basic</label>
-<input type="radio" id="btne%s" name="btn%s" onclick="toggle('%s',true)" class="re" checked /><label for="btne%s">Enhanced</label>
+<!--<input type="radio" id="btnb%s" name="btn%s" onclick="toggle('%s',false)" class="rb" /><label for="btnb%s">Basic</label>-->
+<!--<input type="radio" id="btne%s" name="btn%s" onclick="toggle('%s',true)" class="re" checked /><label for="btne%s">Enhanced</label>-->
 </div>
 `, svgID, svgID, svgID, svgID, svgID, svgID, svgID, svgID)
 	} else {
 		fmt.Printf(`<div class="udcontrol">
-<input type="radio" id="btnb%s" name="btn%s" onclick="toggle('%s',false)" class="rb" checked /><label for="btnb%s">Basic</label>
+<!--<input type="radio" id="btnb%s" name="btn%s" onclick="toggle('%s',false)" class="rb" checked /><label for="btnb%s">Basic</label>-->
 </div>
 `, svgID, svgID, svgID, svgID)
 	}
