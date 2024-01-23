@@ -176,7 +176,7 @@ def print_conllu_format(data):
 @app.post("/get_trankit_graph_data")
 async def get_trankit_graph_data(data: str = Form('data')):
     p = Pipeline(lang='customized',
-                 cache_dir=r"/Users/sushvinmarimuthu/DataspellProjects/HFTransformers/conllu/saved_model_tamil")
+                 cache_dir=rf"{os.getenv('saved_model')}")
     output = tt.tokenize(data)
     texts = output.strip().split('</S><S> ')
 
