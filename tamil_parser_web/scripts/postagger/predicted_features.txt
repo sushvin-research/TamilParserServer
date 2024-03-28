@@ -1,5 +1,0 @@
-SCONJ
-VERB
-AUX
-PUNCT
-

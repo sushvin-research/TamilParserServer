@@ -2,22 +2,23 @@ import os
 import re
 import subprocess
 
-from tamil_nlp_package_test import sent_tokenizer as tt
+from tamil_nlp_package_test import sent_tokenizer
 from trankit import Pipeline
 
 from fastapi import FastAPI, Form
 
+from Morph.convertor import convert_tam_utf2wx, convert_tam_wx2utf
+from Morph.get_conllu import process_text
+from Morph.post_process import repair_rules
+
 app = FastAPI()
-p = Pipeline(lang='customized-mwt', cache_dir=r"save_dir")
+p = Pipeline(lang='customized-mwt', cache_dir=r"March-28-1600-sent")
 
 
 def get_command_output(command):
-    result = subprocess.run(
-        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    print(result.returncode)
+    result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode != 0:
         print("Error executing command:", result.stderr)
-
     os.remove("data.conllu")
     return result.stdout
 
@@ -51,6 +52,53 @@ async def get_graph(data: str = Form('data')):
     return get_command_output('./bin/conllu2svg data.conllu')
 
 
+def rule_pos(pos):
+    pos_string = ''
+    lemma_result = {}
+    for index, data in enumerate(pos):
+        pos_string += f"{index + 1}\t{convert_tam_utf2wx(data['token_text'])}\t{data['upos']}\n"
+    rule_pos_dict = process_text(pos_string)
+    for i, j in zip(rule_pos_dict, pos):
+        if (j['upos'] == "NOUN" or j['upos'] == "PROPN" or j['upos'] == "VERB" or j['upos'] == "AUX" or
+                j['upos'] == "PRON" or j['upos'] == "NUM"):
+            i = convert_tam_utf2wx(j['token_text'])
+            lemma_result[j['token_text']] = rule_pos_dict[i][0].split("\t")[2]
+
+            lemma_text = rule_pos_dict[i][0].split("\t")[2].split("/")
+
+            if len(lemma_text) > 1:
+                if (j['upos'] == "NOUN" or j['upos'] == "PROPN") and len(lemma_text) > 1:
+                    lemma_text = [s for s in lemma_text if 'noun' in s]
+                    lemma_text = lemma_text[0]
+
+                elif j['upos'] == "VERB" or j['upos'] == "AUX" and len(lemma_text) > 1:
+                    lemma_text = [s for s in lemma_text if 'verb' in s]
+                    lemma_text = lemma_text[0]
+
+                elif j['upos'] == "PRON" and len(lemma_text) > 1:
+                    lemma_text = [s for s in lemma_text if 'pronoun' in s]
+                    lemma_text = lemma_text[0]
+
+                elif j['upos'] == "NUM" and len(lemma_text) > 1:
+                    lemma_text = [s for s in lemma_text if 'num' in s]
+                    lemma_text = lemma_text[0]
+            else:
+                lemma_text = lemma_text[0]
+
+            if len(lemma_text) > 0 and "<lcat" in lemma_text:
+                split_text = lemma_text.split("<lcat")[0]
+                if "rcat" in split_text:
+                    split_text = re.sub(r'<.*?>', '', split_text)
+                    lemma_result[j['token_text']] = convert_tam_wx2utf(split_text)
+                else:
+                    lemma_result[j['token_text']] = convert_tam_wx2utf(split_text)
+            else:
+                lemma_result[j['token_text']] = convert_tam_wx2utf(lemma_text)
+        else:
+            lemma_result[j['token_text']] = j['token_text']
+    return lemma_result
+
+
 def print_conllu_format(data):
     result = {}
     for sentence_info in data['sentences']:
@@ -59,11 +107,22 @@ def print_conllu_format(data):
         conllu_text = ''
         pos = []
         morph = []
+
+        for token_info in tokens:
+            if type(token_info['id']) == int:
+                token_text = token_info['text']
+                upos = token_info['upos']
+                pos.append({"token_text": token_text, "upos": upos})
+            else:
+                for token in token_info['expanded']:
+                    pos.append({"token_text": token['text'], "upos": token['upos']})
+        lemma_result = rule_pos(pos)
+
         for token_info in tokens:
             if type(token_info['id']) == int:
                 token_id = token_info['id']
                 token_text = token_info['text']
-                lemma = token_info['lemma']
+                lemma = lemma_result[token_text]
                 upos = token_info['upos']
                 xpos = token_info.get('xpos', '_')
                 feats = token_info.get('feats', '_')
@@ -71,34 +130,30 @@ def print_conllu_format(data):
                 deprel = token_info['deprel']
                 deps = str(head) + ":" + str(deprel)
                 conllu_text += f"{token_id}\t{token_text}\t{lemma}\t{upos}\t{xpos}\t{feats}\t{head}\t{deprel}\t{deps}\t_\n"
-                pos.append({"token_text": token_text, "upos": upos})
                 morph.append({"token_text": token_info['text'], "feats": token_info.get('feats', '_'),
                               "upos": token_info['upos'],
-                              "lemma": token_info['lemma']})
+                              "lemma": lemma})
             else:
                 conllu_text += f"{token_info['id'][0]}-{token_info['id'][1]}\t{token_info['text']}\t_\t_\t_\t_\t_\t_\t_\t_\n"
                 for token in token_info['expanded']:
                     head = token['head']
                     deprel = token['deprel']
                     deps = str(head) + ":" + str(deprel)
-                    conllu_text += f"{token['id']}\t{token['text']}\t{token['lemma']}\t{token['upos']}\t{token.get('xpos', '_')}\t{token.get('feats', '_')}\t{token['head']}\t{token['deprel']}\t{deps}\t_\n"
-                    pos.append({"token_text": token['text'], "upos": token['upos']})
+                    conllu_text += f"{token['id']}\t{token['text']}\t{lemma_result[token['text']]}\t{token['upos']}\t{token.get('xpos', '_')}\t{token.get('feats', '_')}\t{token['head']}\t{token['deprel']}\t{deps}\t_\n"
                     morph.append({"token_text": token['text'], "feats": token.get('feats', '_'), "upos": token['upos'],
-                                  "lemma": token['lemma']})
-        conllu_text += "\n\n"
-        result['graph_feature'] = conllu_text
+                                  "lemma": lemma_result[token['text']]})
+        # conllu_text += "\n\n"
+        result['graph_feature'] = repair_rules(conllu_text) + "\n\n"
         result['pos'] = pos
         result['morph'] = morph
-        print(conllu_text)
     return result
 
 
 @app.post("/get_trankit_graph_data")
 async def get_trankit_graph_data(data: str = Form('data')):
-    output = tt.tokenize(data.strip())
-    print(output)
+    data = data.replace("\n", " ")
+    output = sent_tokenizer.tokenize(data.strip())
     texts = output.strip().split('\n')
-    print(texts)
     doc_texts = []
     for text in texts:
         if text != '':

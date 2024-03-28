@@ -96,7 +96,7 @@ func main() {
 <script type="text/javascript" src="/conllu/tooltip.js"></script>
 <script type="text/javascript" src="/conllu/main.js"></script>
 <style type="text/css">
-  body { padding-bottom: 200px; }
+  body { padding-bottom: 50px; }
   #top {
     margin-bottom: 2em;
   }
