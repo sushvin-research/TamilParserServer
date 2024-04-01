@@ -12,7 +12,7 @@ from Morph.get_conllu import process_text
 from Morph.post_process import repair_rules
 
 app = FastAPI()
-p = Pipeline(lang='customized-mwt', cache_dir=r"March-28-1600-sent")
+p = Pipeline(lang='customized-mwt', cache_dir=r"April-01-2800-sent_1500-2")
 
 
 def get_command_output(command):
@@ -52,19 +52,34 @@ async def get_graph(data: str = Form('data')):
     return get_command_output('./bin/conllu2svg data.conllu')
 
 
-def rule_pos(pos):
+def rule_pos(pos, morph_old):
     pos_string = ''
     lemma_result = {}
+    morph_result = {}
     for index, data in enumerate(pos):
         pos_string += f"{index + 1}\t{convert_tam_utf2wx(data['token_text'])}\t{data['upos']}\n"
     rule_pos_dict = process_text(pos_string)
-    for i, j in zip(rule_pos_dict, pos):
+    for i, j, m in zip(rule_pos_dict, pos, morph_old):
+        i = convert_tam_utf2wx(j['token_text'])
+        lemma_result[j['token_text']] = rule_pos_dict[i][0].split("\t")[2]
+
+        lemma_text = rule_pos_dict[i][0].split("\t")[2].split("/")
+
+        if len(lemma_text) > 1 and (j['upos'] == "VERB" or j['upos'] == "AUX") and ("Person=3" in m["feats"]):
+            morph_text = lemma_text[1]
+            pattern = r'<gen:(\w)>'
+            match = re.search(pattern, morph_text)
+            if match:
+                gen_value = match.group(1)
+                if gen_value == 'm':
+                    m["feats"] = m["feats"].replace("Gender=Com", "Gender=Masc")
+                elif gen_value == 'f':
+                    m["feats"] = m["feats"].replace("Gender=Com", "Gender=Fem")
+
+            morph_result[j['token_text']] = m["feats"]
+
         if (j['upos'] == "NOUN" or j['upos'] == "PROPN" or j['upos'] == "VERB" or j['upos'] == "AUX" or
                 j['upos'] == "PRON" or j['upos'] == "NUM"):
-            i = convert_tam_utf2wx(j['token_text'])
-            lemma_result[j['token_text']] = rule_pos_dict[i][0].split("\t")[2]
-
-            lemma_text = rule_pos_dict[i][0].split("\t")[2].split("/")
 
             if len(lemma_text) > 1:
                 if (j['upos'] == "NOUN" or j['upos'] == "PROPN") and len(lemma_text) > 1:
@@ -96,7 +111,7 @@ def rule_pos(pos):
                 lemma_result[j['token_text']] = convert_tam_wx2utf(lemma_text)
         else:
             lemma_result[j['token_text']] = j['token_text']
-    return lemma_result
+    return lemma_result, morph_result
 
 
 def print_conllu_format(data):
@@ -106,6 +121,7 @@ def print_conllu_format(data):
 
         conllu_text = ''
         pos = []
+        morph_old = []
         morph = []
 
         for token_info in tokens:
@@ -113,10 +129,12 @@ def print_conllu_format(data):
                 token_text = token_info['text']
                 upos = token_info['upos']
                 pos.append({"token_text": token_text, "upos": upos})
+                morph_old.append({"feats": token_info.get('feats', '_')})
             else:
                 for token in token_info['expanded']:
                     pos.append({"token_text": token['text'], "upos": token['upos']})
-        lemma_result = rule_pos(pos)
+                    morph_old.append({"feats": token.get('feats', '_')})
+        lemma_result, morph_result = rule_pos(pos, morph_old)
 
         for token_info in tokens:
             if type(token_info['id']) == int:
@@ -125,7 +143,8 @@ def print_conllu_format(data):
                 lemma = lemma_result[token_text]
                 upos = token_info['upos']
                 xpos = token_info.get('xpos', '_')
-                feats = token_info.get('feats', '_')
+                feats = morph_result[token_text] if token_text in morph_result else token_info.get('feats', '_')
+                # feats = token_info.get('feats', '_')
                 head = token_info['head']
                 deprel = token_info['deprel']
                 deps = str(head) + ":" + str(deprel)
@@ -140,9 +159,8 @@ def print_conllu_format(data):
                     deprel = token['deprel']
                     deps = str(head) + ":" + str(deprel)
                     conllu_text += f"{token['id']}\t{token['text']}\t{lemma_result[token['text']]}\t{token['upos']}\t{token.get('xpos', '_')}\t{token.get('feats', '_')}\t{token['head']}\t{token['deprel']}\t{deps}\t_\n"
-                    morph.append({"token_text": token['text'], "feats": token.get('feats', '_'), "upos": token['upos'],
+                    morph.append({"token_text": token['text'], "feats": morph_result[token['text']] if token['text'] in morph_result else token.get('feats', '_'), "upos": token['upos'],
                                   "lemma": lemma_result[token['text']]})
-        # conllu_text += "\n\n"
         result['graph_feature'] = repair_rules(conllu_text) + "\n\n"
         result['pos'] = pos
         result['morph'] = morph

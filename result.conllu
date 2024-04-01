@@ -1,0 +1,116 @@
+# கண்ணன் நண்பர்களுடன் ஊட்டிக்கு சுற்றுலா சென்றிருந்தான் .
+1	கண்ணன்	கண்ணன்	PROPN	_	Case=Nom|Number=Sing	6	nsubj	6:nsubj	_
+2-3	நண்பர்களுடன்	_	_	_	_	_	_	_	_
+2	நண்பர்கள்	நண்பர்	NOUN	_	Case=Nom|Number=Plur	4	nmod:poss	4:nmod:poss	_
+3	உடன்	உடன்	ADP	_	_	2	case	2:case	_
+4	ஊட்டிக்கு	ஊட்டி	NOUN	_	Case=Dat|Number=Sing	6	obl	6:obl	_
+5	சுற்றுலா	சுற்றுலா	NOUN	_	Case=Nom|Number=Sing	6	compound	6:compound	_
+6	சென்றிருந்தான்	சென்றிரு	VERB	_	Gender=Masc|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	0	root	0:root	_
+7	.	.	PUNCT	_	_	6	punct	6:punct	_
+
+
+
+# மத்திய அரசு சார்பாக விவசாயிகளுக்கு பண உதவிகள் வழங்கப்பட்டு வருகிறது.
+1	மத்திய	மத்தியம்	PROPN	_	Number=Sing	2	compound	2:compound	_
+2	அரசு	அரசு	NOUN	_	Case=Nom|Number=Sing	7	obl	7:obl	_
+3	சார்பாக	சார்பாக	ADP	_	_	2	case	2:case	_
+4	விவசாயிகளுக்கு	விவசாயி	NOUN	_	Case=Dat|Number=Plur	7	iobj	7:iobj	_
+5	பண	பணம்	NOUN	_	Number=Sing	6	compound	6:compound	_
+6	உதவிகள்	உதவி	NOUN	_	Case=Nom|Number=Plur	7	nsubj	7:nsubj	_
+7	வழங்கப்பட்டு	வழங்கப்படு	VERB	_	Polarity=Pos|VerbForm=Conv	0	root	0:root	_
+8	வருகிறது	வா	AUX	_	Gender=Neut|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin	7	aux	7:aux	_
+9	.	.	PUNCT	_	_	7	punct	7:punct	_
+
+
+
+# மீனா அரசு தேர்வில் மாநிலத்தில் முதலிடம் பெற்றாள்.
+1	மீனா	மீனா	PROPN	_	Case=Nom|Number=Sing	2	nmod	2:nmod	_
+2	அரசு	அரசு	NOUN	_	Number=Sing	3	compound	3:compound	_
+3	தேர்வில்	தேர்வு	NOUN	_	Case=Loc|Number=Sing	6	obl	6:obl	_
+4	மாநிலத்தில்	மாநிலம்	NOUN	_	Case=Loc|Number=Sing	6	obl	6:obl	_
+5	முதலிடம்	முதல்	NOUN	_	Case=Loc|Number=Sing	6	obj	6:obj	_
+6	பெற்றாள்	பெறு	VERB	_	Gender=Fem|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	0	root	0:root	_
+7	.	.	PUNCT	_	_	6	punct	6:punct	_
+
+
+
+# காஞ்சிபுரம் மாவட்டத்தில் நாளை குறைதீர் முகாம்  நடைபெறுகிறது.
+1	காஞ்சிபுரம்	காஞ்சிபுரம்	PROPN	_	Number=Sing	2	compound	2:compound	_
+2	மாவட்டத்தில்	மாவட்டம்	NOUN	_	Case=Loc|Number=Sing	6	obl	6:obl	_
+3	நாளை	நாளை	ADV	_	Case=Nom|Number=Sing	6	advmod	6:advmod	_
+4	குறைதீர்	குறைதீர்	NOUN	_	Number=Sing	5	compound	5:compound	_
+5	முகாம்	முகாம்	NOUN	_	Case=Nom|Number=Sing	6	nsubj	6:nsubj	_
+6	நடைபெறுகிறது	நடைபெறு	VERB	_	Gender=Neut|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+7	.	.	PUNCT	_	_	6	punct	6:punct	_
+
+
+
+# குமார் வேலைக்காக காலை 6 மணிக்கு திருச்சியிலிருந்து சென்னைக்கு வந்தான்.
+1	குமார்	குமார்	PROPN	_	Case=Nom|Number=Sing	10	nsubj	10:nsubj	_
+2-3	வேலைக்காக	_	_	_	_	_	_	_	_
+2	வேலைக்கு	வேலை	NOUN	_	Case=Dat|Number=Sing	10	obl	10:obl	_
+3	ஆக	ஆக	ADP	_	_	2	case	2:case	_
+4	காலை	கால்	NOUN	_	Case=Nom|Number=Sing	10	obl	10:obl	_
+5	6	6	NUM	_	_	6	nummod	6:nummod	_
+6	மணிக்கு	மணி	NOUN	_	Case=Loc|Number=Sing	10	obl	10:obl	_
+7-8	திருச்சியிலிருந்து	_	_	_	_	_	_	_	_
+7	திருச்சியில்	திருச்சி	PROPN	_	Case=Loc|Number=Sing	10	obl	10:obl	_
+8	இருந்து	இருந்து	ADP	_	_	7	case	7:case	_
+9	சென்னைக்கு	சென்னை	PROPN	_	Case=Dat|Number=Sing	10	obl	10:obl	_
+10	வந்தான்	வா	VERB	_	Gender=Masc|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	0	root	0:root	_
+11	.	.	PUNCT	_	_	10	punct	10:punct	_
+
+
+
+# மீனா வந்த போது அவன் சாப்பிட்டு முடித்தான்.
+1	மீனா	மீனா	PROPN	_	Case=Nom|Number=Sing	2	nsubj	2:nsubj	_
+2	வந்த	வா	VERB	_	Polarity=Pos|Tense=Past|VerbForm=Part	5	advcl	5:advcl	_
+3	போது	போது	PART	_	_	2	mark	2:mark	_
+4	அவன்	அவன்	PRON	_	Case=Nom|Gender=Fem,Masc|Number=Plur|Person=3	5	nsubj	5:nsubj	_
+5	சாப்பிட்டு	சாப்பிடு	VERB	_	Polarity=Pos|VerbForm=Conv	6	advcl	6:advcl	_
+6	முடித்தான்	முடி	AUX	_	Gender=Com|Number=Sing|Person=3|Polite=Form|Tense=Past|VerbForm=Fin	0	root	0:root	_
+7	.	.	PUNCT	_	_	6	punct	6:punct	_
+
+
+
+# மீனா நேற்று மதுரையில் இருந்து வந்தாள்.
+1	மீனா	மீனா	PROPN	_	Case=Nom|Number=Sing	5	nsubj	5:nsubj	_
+2	நேற்று	நேற்று	ADV	_	Case=Nom|Number=Sing	5	advmod	5:advmod	_
+3	மதுரையில்	மதுரை	PROPN	_	Case=Loc|Number=Sing	5	obl	5:obl	_
+4	இருந்து	இருந்து	ADP	_	_	3	case	3:case	_
+5	வந்தாள்	வா	VERB	_	Gender=Fem|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	0	root	0:root	_
+6	.	.	PUNCT	_	_	5	punct	5:punct	_
+
+
+
+# மீனாவை தேட அவள் சென்றுகொண்டிருந்தாள்.
+1	மீனாவை	மீனா	PROPN	_	Case=Acc|Number=Sing	2	obj	2:obj	_
+2	தேட	தேடு	VERB	_	VerbForm=Inf	4	xcomp	4:xcomp	_
+3	அவள்	அவள்	PRON	_	Case=Nom|Gender=Fem|Number=Sing|Person=3	4	nsubj	4:nsubj	_
+4	சென்று	செல்	VERB	_	Polarity=Pos|VerbForm=Conv	0	root	0:root	_
+5	கொண்டிருந்தாள்	கொண்டிரு	AUX	_	Gender=Fem|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	4	aux	4:aux	_
+6	.	.	PUNCT	_	_	4	punct	4:punct	_
+
+
+
+# அவன் வரும் வழியில் புத்தகத்தை வாங்கினான்.
+1	அவன்	அவன்	PRON	_	Case=Nom|Gender=Fem,Masc|Number=Plur|Person=3	2	nsubj	2:nsubj	_
+2	வரும்	வா	VERB	_	Polarity=Pos|Tense=Fut|VerbForm=Part	3	acl	3:acl	_
+3	வழியில்	வழி	NOUN	_	Case=Loc|Number=Sing	5	obl	5:obl	_
+4	புத்தகத்தை	புத்தகம்	NOUN	_	Case=Acc|Number=Sing	5	obj	5:obj	_
+5	வாங்கினான்	வாங்கு	VERB	_	Gender=Com|Number=Sing|Person=3|Polite=Form|Tense=Past|VerbForm=Fin	0	root	0:root	_
+6	.	.	PUNCT	_	_	5	punct	5:punct	_
+
+
+
+# மீனா நேற்றிலிருந்து காய்ச்சலால் அவதிபட்டாள்  .
+1	மீனா	மீனா	PROPN	_	Case=Nom|Number=Sing	5	nsubj	5:nsubj	_
+2-3	நேற்றிலிருந்து	_	_	_	_	_	_	_	_
+2	நேற்றில்	நேற்று	NOUN	_	Case=Loc|Number=Sing	5	obl	5:obl	_
+3	இருந்து	இருந்து	ADP	_	_	2	case	2:case	_
+4	காய்ச்சலால்	காய்ச்சல்	NOUN	_	Case=Ins|Number=Sing	5	obl:inst	5:obl:inst	_
+5	அவதிபட்டாள்	அவதிபட்டாள்	VERB	_	Case=Nom|Number=Sing	0	root	0:root	_
+6	.	.	PUNCT	_	_	5	punct	5:punct	_
+
+
+

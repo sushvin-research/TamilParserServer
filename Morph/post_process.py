@@ -116,6 +116,4 @@ def repair_rules(data):
             df.loc[index, 'relno'] = previous_token_no
             df.loc[index, 'ud'] = previous_token_no + ":case"
 
-    print(df.to_csv(sep="\t", index=False, header=None))
-
     return df.to_csv(sep="\t", index=False, header=None)
