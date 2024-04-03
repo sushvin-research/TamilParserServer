@@ -159,7 +159,9 @@ def print_conllu_format(data):
                     deprel = token['deprel']
                     deps = str(head) + ":" + str(deprel)
                     conllu_text += f"{token['id']}\t{token['text']}\t{lemma_result[token['text']]}\t{token['upos']}\t{token.get('xpos', '_')}\t{token.get('feats', '_')}\t{token['head']}\t{token['deprel']}\t{deps}\t_\n"
-                    morph.append({"token_text": token['text'], "feats": morph_result[token['text']] if token['text'] in morph_result else token.get('feats', '_'), "upos": token['upos'],
+                    morph.append({"token_text": token['text'],
+                                  "feats": morph_result[token['text']] if token['text'] in morph_result else token.get(
+                                      'feats', '_'), "upos": token['upos'],
                                   "lemma": lemma_result[token['text']]})
         result['graph_feature'] = repair_rules(conllu_text) + "\n\n"
         result['pos'] = pos

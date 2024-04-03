@@ -2,14 +2,10 @@ import re
 import subprocess
 
 morphbin = "/home/sushvin/PycharmProjects/TamilParserServer/Morph/tam_apertium_v2.1.moobj"
-inputfile = '/home/sushvin/PycharmProjects/TamilParserServer/Morph/input_files/sample_1.txt'
 
 
 def process_text(data):
     result = {}
-    # fp1 = open(inputfile, "r", encoding='utf-8', errors='ignore')
-    # lines = fp1.read().split("\n")
-    # fp1.close()
     lines = data.split("\n")
     print(lines)
 
