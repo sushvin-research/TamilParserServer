@@ -12,7 +12,7 @@ from Morph.get_conllu import process_text
 from Morph.post_process import repair_rules
 
 app = FastAPI()
-p = Pipeline(lang='customized-mwt', cache_dir=r"April-01-2800-sent_1500-2")
+p = Pipeline(lang='customized-mwt', cache_dir=r"Model-May-03")
 
 
 def get_command_output(command):
@@ -80,22 +80,22 @@ def rule_pos(pos, morph_old):
 
         if (j['upos'] == "NOUN" or j['upos'] == "PROPN" or j['upos'] == "VERB" or j['upos'] == "AUX" or
                 j['upos'] == "PRON" or j['upos'] == "NUM"):
-
+            org_root_text = lemma_text[0]
             if len(lemma_text) > 1:
                 if (j['upos'] == "NOUN" or j['upos'] == "PROPN") and len(lemma_text) > 1:
                     lemma_text = [s for s in lemma_text if 'noun' in s]
-                    lemma_text = lemma_text[0]
 
                 elif j['upos'] == "VERB" or j['upos'] == "AUX" and len(lemma_text) > 1:
                     lemma_text = [s for s in lemma_text if 'verb' in s]
-                    lemma_text = lemma_text[0]
 
                 elif j['upos'] == "PRON" and len(lemma_text) > 1:
                     lemma_text = [s for s in lemma_text if 'pronoun' in s]
-                    lemma_text = lemma_text[0]
 
                 elif j['upos'] == "NUM" and len(lemma_text) > 1:
                     lemma_text = [s for s in lemma_text if 'num' in s]
+                if len(lemma_text) == 0:
+                    lemma_text = lemma_text
+                else:
                     lemma_text = lemma_text[0]
             else:
                 lemma_text = lemma_text[0]
@@ -107,6 +107,8 @@ def rule_pos(pos, morph_old):
                     lemma_result[j['token_text']] = convert_tam_wx2utf(split_text)
                 else:
                     lemma_result[j['token_text']] = convert_tam_wx2utf(split_text)
+            elif len(lemma_text) == 0:
+                lemma_result[j['token_text']] = convert_tam_wx2utf(org_root_text.strip("^"))
             else:
                 lemma_result[j['token_text']] = convert_tam_wx2utf(lemma_text)
         else:
