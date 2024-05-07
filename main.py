@@ -59,10 +59,9 @@ def rule_pos(pos, morph_old):
     for index, data in enumerate(pos):
         pos_string += f"{index + 1}\t{convert_tam_utf2wx(data['token_text'])}\t{data['upos']}\n"
     rule_pos_dict = process_text(pos_string)
-    for i, j, m in zip(rule_pos_dict, pos, morph_old):
+    for j, m in zip(pos, morph_old):
         i = convert_tam_utf2wx(j['token_text'])
         lemma_result[j['token_text']] = rule_pos_dict[i][0].split("\t")[2]
-
         lemma_text = rule_pos_dict[i][0].split("\t")[2].split("/")
 
         if len(lemma_text) > 1 and (j['upos'] == "VERB" or j['upos'] == "AUX") and ("Person=3" in m["feats"]):
