@@ -1,7 +1,7 @@
 import re
 import subprocess
 
-morphbin = "/home/sushvin/PycharmProjects/TamilParserServer/Morph/tam_apertium_v2.1.moobj"
+morphbin = "Morph/tam_apertium_v2.1.moobj"
 
 
 def process_text(data):
