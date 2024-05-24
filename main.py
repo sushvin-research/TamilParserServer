@@ -39,12 +39,12 @@ def is_go_installed():
         return False
 
 
-@app.get("/api/tamilparser/server/")
+@app.get("/")
 async def main():
     return {"Message": "Server is listening..."}
 
 
-@app.post("/api/tamilparser/server/visualizeGraph")
+@app.post("/visualizeGraph")
 async def get_graph(data: str = Form('data')):
     with open('data.conllu', 'w') as f:
         f.write(data)
@@ -170,7 +170,7 @@ def print_conllu_format(data):
     return result
 
 
-@app.post("/api/tamilparser/server/get_trankit_graph_data")
+@app.post("/get_trankit_graph_data")
 async def get_trankit_graph_data(data: str = Form('data')):
     data = data.replace("\n", " ")
     output = sent_tokenizer.tokenize(data.strip())
