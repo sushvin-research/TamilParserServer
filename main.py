@@ -12,7 +12,7 @@ from Morph.get_conllu import process_text
 from Morph.post_process import repair_rules
 
 app = FastAPI()
-p = Pipeline(lang='customized-mwt', cache_dir=r"Model-May-03")
+p = Pipeline(lang='customized-mwt', cache_dir=r"Models/Model-May-03")
 
 
 def get_command_output(command):
