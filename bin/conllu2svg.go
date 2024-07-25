@@ -91,10 +91,10 @@ func main() {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Universal Dependencies</title>
-<link rel="stylesheet" type="text/css" href="/TamilParser/conllu/tooltip.css" />
-<script type="text/javascript" src="/TamilParser/conllu/jquery.js"></script>
-<script type="text/javascript" src="/TamilParser/conllu/tooltip.js"></script>
-<script type="text/javascript" src="/TamilParser/conllu/main.js"></script>
+<link rel="stylesheet" type="text/css" href="/TamilParserAssetStaticPrefix/conllu/tooltip.css" />
+<script type="text/javascript" src="/TamilParserAssetStaticPrefix/conllu/jquery.js"></script>
+<script type="text/javascript" src="/TamilParserAssetStaticPrefix/conllu/tooltip.js"></script>
+<script type="text/javascript" src="/TamilParserAssetStaticPrefix/conllu/main.js"></script>
 <style type="text/css">
   body { padding-bottom: 50px; }
   #top {
