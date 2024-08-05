@@ -10,3 +10,5 @@ Morph/input_files
 
 in.tmp
 out.tmp
+
+bin/conllu2svg
