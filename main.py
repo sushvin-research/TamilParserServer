@@ -7,12 +7,19 @@ from trankit import Pipeline
 from fastapi import FastAPI, Form
 from processor import print_conllu_format
 
+
 # p = Pipeline(lang='customized-mwt', cache_dir=r"Models/Model_v1.1")
 
-model_checkpoints = [
-    "Model_v1.1", "Model_v1.2", "Model_v1.3", "Model_v1.4"
-]
+# model_checkpoints = [
+#     "Model_v1.1", "Model_v1.2", "Model_v1.3", "Model_v1.4", "Model_v1.5",
+# ]
 
+def get_model_checkpoints():
+    model_lists = [f.name for f in os.scandir("Models") if f.is_dir()]
+    return model_lists
+
+
+model_checkpoints = get_model_checkpoints()
 model_vars = {}
 
 
@@ -44,7 +51,8 @@ def get_command_output(command):
 
 @app.get("/")
 async def main():
-    return {"Message": "Server is listening..."}
+    model_lists = get_model_checkpoints()
+    return {"Message": "Server is listening...", "model_lists": model_lists}
 
 
 @app.post("/visualizeGraph")
