@@ -1,10 +1,12 @@
 import os
 import re
 import subprocess
+from datetime import datetime
+import pandas as pd
 from contextlib import asynccontextmanager
 from tamil_nlp_package_test import sent_tokenizer
 from trankit import Pipeline
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, Request
 from processor import print_conllu_format
 
 
@@ -64,7 +66,8 @@ async def get_graph(data: str = Form('data')):
 
 
 @app.post("/get_trankit_graph_data")
-async def get_trankit_graph_data(data: str = Form('data'), model_checkpoint: str = Form('model_checkpoint')):
+async def get_trankit_graph_data(request: Request, data: str = Form('data'), model_checkpoint: str = Form('model_checkpoint')):
+    record = []
     data = data.replace("\n", " ")
     output = sent_tokenizer.tokenize(data.strip())
     texts = output.strip().split('\n')
@@ -78,4 +81,23 @@ async def get_trankit_graph_data(data: str = Form('data'), model_checkpoint: str
             doc_texts.append(
                 {"text": text, "feature": result['graph_feature'], "pos": result['pos'], "morph": result['morph']}
             )
+
+    # Get the client's IP address
+    client_ip = request.client.host
+    current_date = datetime.now().date()
+    current_time = datetime.now().time()
+    record.append({
+        "date": current_date,
+        "time": current_time,
+        "ip": client_ip,
+        "input": data,
+        "output": doc_texts
+    })
+
+    file_path = "records/record.csv"
+    df = pd.DataFrame(record)
+    if os.path.exists(file_path):
+        df.to_csv(file_path, mode='a', index=False, header=False)
+    else:
+        df.to_csv(file_path, mode='w', index=False)
     return doc_texts
